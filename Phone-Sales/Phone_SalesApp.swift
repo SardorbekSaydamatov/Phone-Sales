@@ -11,7 +11,13 @@ import SwiftUI
 struct Phone_SalesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                if UserDefaults.standard.string(forKey: "authToken") != nil {
+                    ContainerView()
+                } else {
+                    LoginView()
+                }
+            }
         }
     }
 }
