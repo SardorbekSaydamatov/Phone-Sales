@@ -47,9 +47,17 @@ class Auth {
                     if let success = jsonResponse["success"] as? Bool, success {
                         if let token = jsonResponse["token"] as? String {
                             UserDefaults.standard.set(token, forKey: "authToken")
+                            
+                            if let data = jsonResponse["data"] as? [String: Any] {
+                                UserDefaults.standard.set(data, forKey: "userData")
+                            }
+                            
                             UserDefaults.standard.synchronize()
                             
                             print("Token received: \(token)")
+                            if let userData = UserDefaults.standard.dictionary(forKey: "userData") {
+                                print("Data received: \(userData)")
+                            }
                             
                             completion(.success(jsonResponse))
                         } else {
@@ -92,8 +100,7 @@ class Auth {
             "email": email,
             "name": name,
             "organization_name": organizationName,
-            "password": password,
-            "role": "admin"
+            "password": password
         ]
         
         do {
@@ -117,6 +124,7 @@ class Auth {
                 return
             }
             
+            
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
                     print("Response: \(jsonResponse)")
@@ -124,9 +132,28 @@ class Auth {
                     if let success = jsonResponse["success"] as? Bool, success {
                         if let token = jsonResponse["token"] as? String {
                             UserDefaults.standard.set(token, forKey: "authToken")
+                            
+                            if let data = jsonResponse["data"] as? [String: Any],
+                               let user = data["user"] as? [String: Any] {
+                                UserDefaults.standard.set(user, forKey: "userData")
+                                
+                                if let organization = data["organization"] as? [String: Any] {
+                                    let organizationData = try JSONSerialization.data(withJSONObject: organization, options: .fragmentsAllowed)
+                                    UserDefaults.standard.set(organizationData, forKey: "organizationData")
+                                }
+                            }
+                            
                             UserDefaults.standard.synchronize()
                             
                             print("Token received: \(token)")
+                            if let userData = UserDefaults.standard.dictionary(forKey: "userData") {
+                                print("User data received: \(userData)")
+                            }
+                            if let organizationData = UserDefaults.standard.data(forKey: "organizationData") {
+                                if let organizationDict = try JSONSerialization.jsonObject(with: organizationData, options: .mutableContainers) as? [String: Any] {
+                                    print("Organization data received: \(organizationDict)")
+                                }
+                            }
                             
                             completion(.success(jsonResponse))
                         } else {
@@ -147,6 +174,7 @@ class Auth {
                 completion(.failure(parsingError))
             }
         }
+        
         task.resume()
     }
 }

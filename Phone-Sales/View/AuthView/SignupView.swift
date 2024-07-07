@@ -15,17 +15,26 @@ struct SignupView: View {
     @State var showMainView: Bool = false
     @State var showAlert: Bool = false
     @State var alertMessage: String = ""
-    
+    @State var isLoading: Bool = false
+
     var body: some View {
         VStack {
             YTextField(text: $userName, placeholder: "Ism")
             YTextField(text: $organization, placeholder: "Do'kon nomi")
             YTextField(text: $email, placeholder: "test@gmail.com")
-            YTextField(text: $password, placeholder: "Parol")
-            SubmitButton(title: "Ro'yhatga olish") {
-                signUpTapped()
+            YSecureField(text: $password, placeholder: "Parol")
+            
+            if isLoading {
+                ProgressView()
+                    .padding()
+            } else {
+                SubmitButton(title: "Ro'yhatga olish") {
+                    signUpTapped()
+                }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
+        .dismissKeyboardOnTap()
         .padding()
         .navigationDestination(isPresented: $showMainView) {
             ContainerView()
@@ -38,21 +47,34 @@ struct SignupView: View {
             )
         }
     }
-    
+
     private func signUpTapped() {
-        if email != "" && password != "", organization != "", userName != "" {
-            Auth.shared.signUp(email: email, name: userName, organizationName: organization, password: password) { result in
+        guard !email.isEmpty && !password.isEmpty && !organization.isEmpty && !userName.isEmpty else {
+            alertMessage = "Barcha maydonlar to'ldirilishi shart!"
+            showAlert = true
+            return
+        }
+
+        isLoading = true
+        Auth.shared.signUp(email: email, name: userName, organizationName: organization, password: password) { result in
+            DispatchQueue.main.async {
+                isLoading = false
                 switch result {
                 case .success(_):
                     showMainView = true
+                    userName = ""
+                    organization = ""
+                    email = ""
+                    password = ""
                 case .failure(let error):
                     alertMessage = error.localizedDescription
                     showAlert = true
+                    userName = ""
+                    organization = ""
+                    email = ""
+                    password = ""
                 }
             }
-        } else {
-            alertMessage = "Email va parol kiritilishi shart!"
-            showAlert = true
         }
     }
 }

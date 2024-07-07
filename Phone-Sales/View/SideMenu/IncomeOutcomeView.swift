@@ -9,7 +9,9 @@ import SwiftUI
 
 struct IncomeOutcomeView: View {
     var body: some View {
-        Text("IncomeOutcome")
+        ZStack {
+            Text("IncomeOutcome")
+        }
     }
 }
 

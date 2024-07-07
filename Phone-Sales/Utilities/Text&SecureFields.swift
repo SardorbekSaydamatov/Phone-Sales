@@ -12,6 +12,8 @@ struct YTextField: View {
     
     @Binding var text: String
     @State var placeholder: String = ""
+    var color: Color = .blue
+    var disabled: Bool = false
     var body: some View {
         
         TextField(placeholder, text: $text)
@@ -22,7 +24,9 @@ struct YTextField: View {
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(lineWidth: 1)
-                    .foregroundStyle(Color.blue))
+                    .foregroundStyle(color)
+                )
+            .disabled(disabled)
     }
 }
 

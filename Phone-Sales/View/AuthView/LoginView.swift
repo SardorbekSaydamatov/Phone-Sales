@@ -14,17 +14,27 @@ struct LoginView: View {
     @State var showMainView: Bool = false
     @State var showAlert: Bool = false
     @State var alertMessage: String = ""
+    @State var isLoading: Bool = false
+
     var body: some View {
         VStack {
             YTextField(text: $email, placeholder: "test@gmail.com")
             YSecureField(text: $password, placeholder: "Parol")
-            SubmitButton(title: "Kirish") {
-                loginTapped()
-            }
-            SubmitButton(title: "Ro'yhatdan o'tish", backgroundColor: Color.green) {
-                showSignup = true
+            
+            if isLoading {
+                ProgressView()
+                    .padding()
+            } else {
+                SubmitButton(title: "Kirish") {
+                    loginTapped()
+                }
+                SubmitButton(title: "Ro'yhatdan o'tish", backgroundColor: Color.green) {
+                    showSignup = true
+                }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
+        .dismissKeyboardOnTap()
         .navigationBarBackButtonHidden()
         .padding()
         .navigationDestination(isPresented: $showSignup) {
@@ -40,12 +50,19 @@ struct LoginView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        
     }
-    
+
     private func loginTapped() {
-        if email != "" && password != "" {
-            Auth.shared.login(email: email, password: password) { result in
+        guard !email.isEmpty && !password.isEmpty else {
+            alertMessage = "Email va parol kiritilishi shart!"
+            showAlert = true
+            return
+        }
+
+        isLoading = true
+        Auth.shared.login(email: email, password: password) { result in
+            DispatchQueue.main.async {
+                isLoading = false
                 switch result {
                 case .success(_):
                     email = ""
@@ -58,9 +75,6 @@ struct LoginView: View {
                     password = ""
                 }
             }
-        } else {
-            alertMessage = "Email va parol kiritilishi shart!"
-            showAlert = true
         }
     }
 }

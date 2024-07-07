@@ -18,7 +18,6 @@ struct ProductAddView: View {
     @State private var additionInfo: String = ""
     @Environment (\.dismiss) var dismiss
     
-    
     @State private var imageArr: [UIImage] = []
     @State private var selectedImage: UIImage?
     @State private var isShowingImagePicker = false
@@ -28,7 +27,7 @@ struct ProductAddView: View {
     
     var body: some View {
         ZStack {
-            VStack() {
+            VStack {
                 YTextField(text: $productName, placeholder: "Mahsulot nomi: Apple Vision Pro 2")
                 YTextField(text: $productIMEI, placeholder: "23122342342344376")
                 YTextField(text: $originalPrice, placeholder: "Kelish narxi: 4000")
@@ -44,21 +43,37 @@ struct ProductAddView: View {
                 .padding(.vertical)
                 
                 HStack(spacing: 20) {
-                    ForEach(imageArr, id: \.self) { image in
-                        Image(uiImage: image)
+                    ForEach(imageArr.indices, id: \.self) { index in
+                        Image(uiImage: imageArr[index])
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 80, height: 80)
+                            .overlay(
+                                Button(action: {
+                                    // Delete the image at index
+                                    imageArr.remove(at: index)
+                                }, label: {
+                                    Image(systemName: "trash.circle.fill")
+                                        .foregroundColor(.red)
+                                        .padding(5)
+                                        .background(Color.white)
+                                        .clipShape(Circle())
+                                        .offset(x: 15, y: -15)
+                                })
+                                .opacity(0.8)
+                                .padding(.leading, -5)
+                                .padding(.top, -5),
+                                alignment: .topTrailing
+                            )
                     }
                 }
-                
                 buttons
             }
             .scrollable(showIndicators: false)
         }
         .scrollDismissesKeyboard(.interactively)
         .padding()
-        .navigationTitle("Mahsulot qo'shish")
+        .navigationTitle("Mahsulot tahrirlash")
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -73,7 +88,7 @@ struct ProductAddView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(lineWidth: 1)
                     .foregroundStyle(Color.blue))
-                    .ignoresSafeArea()
+            .ignoresSafeArea()
     }
     
     
@@ -91,7 +106,7 @@ struct ProductAddView: View {
             })
             
             SubmitButton(title: "Saqlash") {
-                // Your save action here
+                
             }
             .padding(.vertical)
         }
@@ -102,16 +117,14 @@ struct ProductAddView: View {
                 })
         }
         .sheet(isPresented: $isShowingImageCropper) {
-            if selectedImage != nil {
-                    ImageCropper(image: $selectedImage)
-                        .onDisappear {
-                            if let croppedImage = selectedImage {
-                                imageArr.append(croppedImage)
-                                selectedImage = nil
-                            }
-                        }
+            ImageCropper(image: $selectedImage)
+                .onDisappear {
+                    if let croppedImage = selectedImage {
+                        imageArr.append(croppedImage)
+                        selectedImage = nil
+                    }
                 }
-            }
+        }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Limit Exceeded"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }

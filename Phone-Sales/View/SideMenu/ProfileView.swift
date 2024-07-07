@@ -15,6 +15,7 @@ struct ProfileView: View {
             
             Button(action: {
                 UserDefaults.standard.removeObject(forKey: "authToken")
+                UserDefaults.standard.removeObject(forKey: "userData")
                 showLogin = true
             }, label: {
                 Text("Sign out")

@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SalesView: View {
     var body: some View {
-        Text("Sales")
+        VStack {
+            Text("Sales")
+        }
     }
 }
 

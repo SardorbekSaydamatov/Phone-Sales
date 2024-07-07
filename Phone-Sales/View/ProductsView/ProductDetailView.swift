@@ -8,30 +8,24 @@
 import SwiftUI
 
 struct ProductDetailView: View {
-    
-    @State var images: [String] = [
-        "https://firebasestorage.googleapis.com/v0/b/phone-sale-pos.appspot.com/o/productse0f0be51-c8b3-480d-a899-dc051329b1fb.jpeg?alt=media&token=306f1596-161b-4c27-a47a-7bcacf1bc223",
-        "https://firebasestorage.googleapis.com/v0/b/phone-sale-pos.appspot.com/o/products7a1b12e9-3f31-47d4-b3d6-6ddac79f5e92.jpeg?alt=media&token=731d6e10-e02a-457e-9674-a2bea1d25194"
-    ]
-    @State var title: String = "house"
-    @State var imei: String = "13242323"
-    @State var cost: Int = 4000
-    @State var price: Int = 4400
-    @State var isNew: Bool = false
-    @State var haveDocument: Bool = false
-    @State var extraInfo: String = ""
-    @State var infoAboutOwner: String = "Sardor"
-    @State var createdDate: Date?
+    @StateObject var viewModel = ProductViewModel()
+    @State var id: String = ""
+    @State var showCost: Bool = false
+    @State var showSellView: Bool = false
+    @State var showProductAddView: Bool = false
+    @State var showMenu: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text(title)
-                .font(.largeTitle)
-            Text("Imei: \(imei)")
-                .font(.title2)
-            if images != nil {
+            if let product = viewModel.selectedProduct {
+                
+                Text(product.name)
+                    .font(.largeTitle)
+                Text("Imei: \(product.imei)")
+                    .font(.title2)
+                
                 HStack(spacing: 10) {
-                    ForEach(images, id: \.self) {image in
+                    ForEach(product.images, id: \.self) {image in
                         AsyncImage(url: URL(string: image)) {image in
                             image
                                 .resizable()
@@ -49,35 +43,90 @@ struct ProductDetailView: View {
                         }
                     }
                 }
-            }
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(isNew ? "Xolati: Yangi" : "Xolati: Ishlatilgan")
-                    Text(haveDocument ? "Dokument: bor" : "Dokument: Yo'q")
-                    Text("Olingan odam: \(infoAboutOwner)")
-                }
                 
-                Spacer()
-                
-                VStack (alignment: .leading, spacing: 10) {
-                    Text("Kelgan narxi: \(cost)")
-                    Text("Sotish narxi: \(price)")
-                    if let date = createdDate {
-                        Text("Kelgan sana: \(formatDate(date))")
+                HStack {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(product.isNew ? "Xolati: Yangi" : "Xolati: Ishlatilgan")
+                        Divider()
+                            .background(.primary)
+                        Text(product.haveDocument ? "Dokument: bor" : "Dokument: Yo'q")
+                        Divider()
+                            .background(.primary)
+                        Text("Olingan odam: \(product.infoAboutOwner)")
+                    }
+                    Spacer()
+                    
+                    VStack (alignment: .leading, spacing: 10) {
+                        if showCost {
+                            Text("Kelgan narxi: \(product.cost)")
+                            Divider()
+                                .background(.primary)
+                        }
+                        Text("Sotish narxi: \(product.price)")
+                        Divider()
+                            .background(.primary)
+                        Text("Kelgan sana: \(formatDate(product.createdAt))")
                     }
                 }
+                
+                Text("Qo'shimcha ma'lumot")
+                    .font(.title2)
+                    .padding(.leading, 50)
+                    .padding()
+                
+                Text(product.extraInfo)
+                    .multilineTextAlignment(.center)
+            } else {
+                Text("Mahsulot topilmadi!")
+                    .font(.title)
+                    .padding(.top, 40)
             }
             
-            Text("Qo'shimcha ma'lumot")
-                .font(.title2)
-                .padding(.leading, 50)
-                .padding()
-            
-            Text(extraInfo)
-                .multilineTextAlignment(.center)
-            
             Spacer()
+        }
+        .onAppear(perform: {
+            viewModel.findProductById(id)
+        })
+        .navigationDestination(isPresented: $showProductAddView, destination: {
+            ProductAddView()
+        })
+        .navigationDestination(isPresented: $showSellView, destination: {
+            SellView(viewModel: viewModel, id: id)
+        })
+        .sheet(isPresented: $showMenu, content: {
+            VStack(alignment: .leading, spacing: 20) {
+                Button(action: {
+                    showSellView.toggle()
+                    showMenu.toggle()
+                }, label: {
+                    Text("Sotish")
+                })
+                
+                Button(action: {
+                    showProductAddView.toggle()
+                    showMenu.toggle()
+                }, label: {
+                    Text("Tahrirlash")
+                })
+                
+                Button(action: {
+                    showMenu.toggle()
+                }, label: {
+                    Text("O'chirish")
+                })
+            }
+            .foregroundStyle(.primary)
+            .presentationDetents([.height(150)])
+        })
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    showMenu.toggle()
+                }, label: {
+                    Image(systemName: "ellipsis")
+                })
+                .foregroundStyle(.primary)
+            }
         }
         .padding(.horizontal)
     }
@@ -89,6 +138,8 @@ struct ProductDetailView: View {
     }
 }
 
-#Preview {
-    ProductDetailView()
-}
+//#Preview {
+//    NavigationStack {
+//        ProductDetailView()
+//    }
+//}
