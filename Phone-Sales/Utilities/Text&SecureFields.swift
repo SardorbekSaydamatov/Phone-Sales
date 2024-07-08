@@ -22,7 +22,7 @@ struct YTextField: View {
             .frame(height: 48)
             .padding(.leading)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
                     .stroke(lineWidth: 1)
                     .foregroundStyle(color)
                 )
@@ -30,6 +30,11 @@ struct YTextField: View {
     }
 }
 
+#Preview {
+    
+    YTextField(text: .constant("adc"))
+  
+}
 
 // MARK: - SecureField
 

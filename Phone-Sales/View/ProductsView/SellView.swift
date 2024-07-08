@@ -68,9 +68,6 @@ struct SellView: View {
         .onAppear {
             viewModel.findProductById(id)
         }
-        .onDisappear {
-            viewModel.selectedProduct = nil
-        }
         .scrollable()
         .scrollDismissesKeyboard(.interactively)
         .dismissKeyboardOnTap()
@@ -111,6 +108,7 @@ struct SellView: View {
                 case .success():
                     alertMessage = "Sotuv muvaffaqiyatli amalga oshirildi!"
                     showAlert = true
+                    viewModel.selectedProduct = nil
                 case .failure(let error):
                     alertMessage = error.localizedDescription
                     showAlert = true
