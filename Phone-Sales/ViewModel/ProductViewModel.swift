@@ -25,7 +25,6 @@ class ProductViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 self?.products = fetchedProducts ?? []
-                print("********\(self?.products)")
             }
         }
     }
@@ -41,6 +40,7 @@ class ProductViewModel: ObservableObject {
     }
     
     func findProductById(_ id: String) {
+        fetchProducts()
         if let product = products.first(where: { $0.id == id }) {
             self.selectedProduct = product
         } else {

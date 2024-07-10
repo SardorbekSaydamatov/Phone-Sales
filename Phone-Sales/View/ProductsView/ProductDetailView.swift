@@ -88,7 +88,20 @@ struct ProductDetailView: View {
             viewModel.findProductById(id)
         })
         .navigationDestination(isPresented: $showProductAddView, destination: {
-            ProductAddView()
+            if let selectedProduct = viewModel.selectedProduct {
+                ProductAddView(
+                    productId: id,
+                    productName: selectedProduct.name,
+                    productIMEI: selectedProduct.imei,
+                    originalPrice: String(selectedProduct.price),
+                    sellPrice: String(selectedProduct.cost),
+                    additionInfo: selectedProduct.extraInfo,
+                    ownerInfo: selectedProduct.infoAboutOwner,
+                    documentTicked: selectedProduct.haveDocument,
+                    isNewTicked: selectedProduct.isNew,
+                    imageArr2: selectedProduct.images
+                )
+            }
         })
         .navigationDestination(isPresented: $showSellView, destination: {
             SellView(viewModel: viewModel, id: id)
@@ -110,6 +123,7 @@ struct ProductDetailView: View {
                 })
                 
                 Button(action: {
+                    deleteProduct()
                     showMenu.toggle()
                 }, label: {
                     Text("O'chirish")
@@ -129,6 +143,19 @@ struct ProductDetailView: View {
             }
         }
         .padding(.horizontal)
+    }
+    
+    private func deleteProduct() {
+        let service = AddProductService()
+        service.deleteProduct(productID: id) { result in
+            switch result {
+            case .success():
+                viewModel.selectedProduct = nil
+                print("Product deleted successfully.")
+            case .failure(let error):
+                print("Failed to delete product: \(error.localizedDescription)")
+            }
+        }
     }
     
     private func formatDate(_ date: Date) -> String {

@@ -34,6 +34,7 @@ struct ImageCropper: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> CropViewController {
+        
         let cropViewController = CropViewController(image: image!)
         cropViewController.delegate = context.coordinator
         cropViewController.customAspectRatio = CGSize(width: 3, height: 4)

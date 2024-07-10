@@ -61,6 +61,7 @@
 		849368BE2C3BA0F000D91020 /* FirebaseStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849368BD2C3BA0F000D91020 /* FirebaseStorageService.swift */; };
 		849368C02C3BE7E000D91020 /* AddProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849368BF2C3BE7E000D91020 /* AddProductModel.swift */; };
 		849368C22C3BE7F500D91020 /* AddProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849368C12C3BE7F500D91020 /* AddProductService.swift */; };
+		849368C42C3BFFB700D91020 /* AddProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849368C32C3BFFB700D91020 /* AddProductViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,7 @@
 		849368BD2C3BA0F000D91020 /* FirebaseStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageService.swift; sourceTree = "<group>"; };
 		849368BF2C3BE7E000D91020 /* AddProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductModel.swift; sourceTree = "<group>"; };
 		849368C12C3BE7F500D91020 /* AddProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductService.swift; sourceTree = "<group>"; };
+		849368C32C3BFFB700D91020 /* AddProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,7 +191,6 @@
 			children = (
 				8432E9282C2DB02000F635F8 /* AuthView */,
 				8432E92A2C2DB07000F635F8 /* ContainerView.swift */,
-				8432E93F2C2E283400F635F8 /* ProductAddView.swift */,
 				8432E9912C31807400F635F8 /* ProductsView */,
 				8432E9292C2DB05D00F635F8 /* SideMenu */,
 			);
@@ -217,6 +218,7 @@
 				8432E9962C31983400F635F8 /* ProductViewModel.swift */,
 				849368772C37A6A300D91020 /* UserViewModel.swift */,
 				8493688A2C3A6A8500D91020 /* ProductStatisticsViewModel.swift */,
+				849368C32C3BFFB700D91020 /* AddProductViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -290,6 +292,7 @@
 			children = (
 				8432E9982C3278C500F635F8 /* ProductDetailView.swift */,
 				849368792C37BE7400D91020 /* SellView.swift */,
+				8432E93F2C2E283400F635F8 /* ProductAddView.swift */,
 			);
 			path = ProductsView;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				8432E92B2C2DB07000F635F8 /* ContainerView.swift in Sources */,
 				849368C22C3BE7F500D91020 /* AddProductService.swift in Sources */,
 				8432E93C2C2DC71700F635F8 /* SideMenuRawView.swift in Sources */,
+				849368C42C3BFFB700D91020 /* AddProductViewModel.swift in Sources */,
 				8493688D2C3AC2FC00D91020 /* SaleService.swift in Sources */,
 				8432E99F2C33F4AB00F635F8 /* ProductFilter.swift in Sources */,
 				8432E9612C2E877100F635F8 /* ScrollableStretchable + Extensions.swift in Sources */,
