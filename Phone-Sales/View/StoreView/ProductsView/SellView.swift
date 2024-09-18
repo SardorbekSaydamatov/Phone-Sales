@@ -15,7 +15,7 @@ struct SellView: View {
     @State var customerName: String = ""
     @State var phoneNumber: String = ""
     @State var extraInfo: String = ""
-    @State var price: String = "4500"
+    @State var price: String = ""
     @State var firstPayment: String = "0"
     @State var numberOfPayments: String = "3"
     @State var duration: String = "10"
@@ -90,14 +90,14 @@ struct SellView: View {
         
         isLoading = true
         
-        let sale = Sale(
+        let sale = SellProductModel(
             productId: id,
             buyer: customerName,
             description: extraInfo,
             amount: Double(price) ?? 0,
             instalmentCount: installmentTapped ? Int(numberOfPayments) : nil,
             delayInDays: installmentTapped ? Int(duration) : nil,
-            firstPayment: installmentTapped ? Double(firstPayment) : nil,
+            firstPayment: installmentTapped ? Double(firstPayment) : Double(price),
             phone: phoneNumber.isEmpty ? nil : phoneNumber
         )
         

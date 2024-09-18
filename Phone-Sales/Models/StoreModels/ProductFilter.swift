@@ -8,6 +8,7 @@
 import Foundation
 
 struct ProductFilter {
-    var isNew: [Bool]?
-    var haveDocument: [Bool]?
+    var is_new: [Bool]?
+    var have_document: [Bool]?
+    var status: [String]?
 }

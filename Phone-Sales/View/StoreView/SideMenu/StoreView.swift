@@ -7,13 +7,6 @@
 import SwiftUI
 
 struct StoreView: View {
-    @StateObject private var viewModel = ProductViewModel()
-    @StateObject private var userViewModel = UserViewModel()
-    @State private var searchQuery = ""
-    @State private var showProductsCartView = false
-    @State private var showFilter = false
-    @State private var selectedProduct: Product?
-    @State private var selectedFilters = ProductFilter()
     
     var body: some View {
         TabView {

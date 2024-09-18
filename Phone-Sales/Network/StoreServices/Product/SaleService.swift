@@ -10,7 +10,7 @@ import Foundation
 class SaleService {
     var savedToken: String = ""
 
-    func createSale(sale: Sale, completion: @escaping (Result<Void, Error>) -> Void) {
+    func createSale(sale: SellProductModel, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let url = URL(string: "https://server-of-phone-sale-pos.vercel.app/api/sale") else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return

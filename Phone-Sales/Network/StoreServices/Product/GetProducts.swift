@@ -16,14 +16,14 @@ class ProductService {
         var queryItems = [URLQueryItem(name: "text", value: searchQuery)]
         
         if let filter = filter {
-            if let isNewList = filter.isNew {
+            if let isNewList = filter.is_new {
                 for isNew in isNewList {
                     queryItems.append(URLQueryItem(name: "is_new", value: isNew ? "new" : "not_new"))
                 }
             }
-            if let documentAvailableList = filter.haveDocument {
+            if let documentAvailableList = filter.have_document {
                 for documentAvailable in documentAvailableList {
-                    queryItems.append(URLQueryItem(name: "have_document", value: documentAvailable ? "have" : "not_have"))
+                    queryItems.append(URLQueryItem(name: "have_document", value: documentAvailable ? "have" : "no_have"))
                 }
             }
         }

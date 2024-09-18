@@ -20,7 +20,7 @@ struct ContainerView: View {
                     case 0:
                         StoreView()
                     case 1:
-                        SalesView()
+                        SalesHistoryView()
                     case 2:
                         IncomeOutcomeView()
                     case 3:

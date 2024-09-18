@@ -1,9 +1,3 @@
-//
-//  ProductsCartView.swift
-//  Phone-Sales
-//
-//  Created by Sardorbek Saydamatov on 01/07/24.
-//
 
 import SwiftUI
 
